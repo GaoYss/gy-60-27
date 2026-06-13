@@ -16,12 +16,18 @@ async function request(path, options = {}) {
   return data;
 }
 
-export function getPackages() {
-  return request("/packages");
+export function getPackages(style) {
+  const url = style ? `/packages?style=${encodeURIComponent(style)}` : "/packages";
+  return request(url);
 }
 
-export function getPhotographers() {
-  return request("/photographers");
+export function getPhotographers(style) {
+  const url = style ? `/photographers?style=${encodeURIComponent(style)}` : "/photographers";
+  return request(url);
+}
+
+export function getStyles() {
+  return request("/styles");
 }
 
 export function getAvailability(photographerId, date) {

@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
+from .data import STYLES
 from .routes.bookings import bookings_bp
 from .routes.deliveries import deliveries_bp
 from .routes.packages import packages_bp
@@ -21,5 +22,9 @@ def create_app():
     @app.get("/api/health")
     def health():
         return jsonify({"status": "ok", "service": "studio-booking-api"})
+
+    @app.get("/api/styles")
+    def list_styles():
+        return jsonify(STYLES)
 
     return app

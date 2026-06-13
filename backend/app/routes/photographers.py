@@ -7,6 +7,10 @@ photographers_bp = Blueprint("photographers", __name__)
 
 @photographers_bp.get("")
 def list_photographers():
+    style = request.args.get("style")
+    if style:
+        filtered = [item for item in PHOTOGRAPHERS if style in item.get("styles", [])]
+        return jsonify([public_photographer(item) for item in filtered])
     return jsonify([public_photographer(item) for item in PHOTOGRAPHERS])
 
 

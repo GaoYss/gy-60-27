@@ -451,6 +451,61 @@ textarea {
   min-height: 420px;
 }
 
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.style-chip {
+  background: #fff;
+  border: 1px solid rgba(58, 48, 36, 0.18);
+  border-radius: 999px;
+  color: #4f463a;
+  font-size: 14px;
+  font-weight: 700;
+  min-height: 36px;
+  padding: 0 16px;
+  transition: all 0.18s ease;
+}
+
+.style-chip:hover {
+  border-color: #1b3a4b;
+  color: #1b3a4b;
+}
+
+.style-chip.active {
+  background: #1b3a4b;
+  border-color: #1b3a4b;
+  color: #fff;
+}
+
+.style-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.style-tag {
+  background: #f5f1ea;
+  border-radius: 999px;
+  color: #706659;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+}
+
+.photographer-tags {
+  margin: 4px 0 0;
+}
+
+.photographer-tags .style-tag {
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
 @media (max-width: 980px) {
   .package-grid,
   .booking-layout,

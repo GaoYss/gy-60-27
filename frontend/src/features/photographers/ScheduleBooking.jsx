@@ -14,16 +14,26 @@ const initialForm = {
   notes: "",
 };
 
-export function ScheduleBooking({ packages, photographers }) {
+export function ScheduleBooking({ packages, photographers, styles }) {
   const [form, setForm] = useState(initialForm);
   const [slots, setSlots] = useState([]);
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [activeStyle, setActiveStyle] = useState("");
+
+  const filteredPhotographers = useMemo(() => {
+    if (!activeStyle) return photographers;
+    return photographers.filter((item) => item.styles?.includes(activeStyle));
+  }, [photographers, activeStyle]);
 
   const activePhotographer = useMemo(
     () => photographers.find((item) => item.id === form.photographerId),
     [form.photographerId, photographers],
   );
+
+  function getStyleName(styleId) {
+    return styles.find((s) => s.id === styleId)?.name || styleId;
+  }
 
   useEffect(() => {
     if (!form.photographerId || !form.date) {
@@ -66,22 +76,50 @@ export function ScheduleBooking({ packages, photographers }) {
       />
 
       <div className="booking-layout">
-        <div className="photographer-list">
-          {photographers.map((item) => (
+        <div>
+          <div className="filter-bar">
             <button
-              className={`photographer-card ${form.photographerId === item.id ? "active" : ""}`}
-              key={item.id}
-              onClick={() => updateField("photographerId", item.id)}
+              className={`style-chip ${!activeStyle ? "active" : ""}`}
+              onClick={() => setActiveStyle("")}
               type="button"
             >
-              <img src={item.avatar} alt={item.name} />
-              <span>
-                <strong>{item.name}</strong>
-                <small>{item.title}</small>
-              </span>
-              <em>{item.availableDates.length} 天可约</em>
+              全部
             </button>
-          ))}
+            {styles.map((style) => (
+              <button
+                className={`style-chip ${activeStyle === style.id ? "active" : ""}`}
+                key={style.id}
+                onClick={() => setActiveStyle(style.id)}
+                type="button"
+              >
+                {style.name}
+              </button>
+            ))}
+          </div>
+          <div className="photographer-list">
+            {filteredPhotographers.map((item) => (
+              <button
+                className={`photographer-card ${form.photographerId === item.id ? "active" : ""}`}
+                key={item.id}
+                onClick={() => updateField("photographerId", item.id)}
+                type="button"
+              >
+                <img src={item.avatar} alt={item.name} />
+                <span>
+                  <strong>{item.name}</strong>
+                  <small>{item.title}</small>
+                  <div className="style-tags photographer-tags">
+                    {item.styles?.slice(0, 3).map((styleId) => (
+                      <span className="style-tag" key={styleId}>
+                        {getStyleName(styleId)}
+                      </span>
+                    ))}
+                  </div>
+                </span>
+                <em>{item.availableDates.length} 天可约</em>
+              </button>
+            ))}
+          </div>
         </div>
 
         <form className="booking-form" onSubmit={handleSubmit}>
